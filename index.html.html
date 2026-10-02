@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>แดชบอร์ดคะแนนประเมิน CRM Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4F6FC;
+    --paper: #FFFFFF;
+    --ink: #1C2242;
+    --ink-soft: #656C8C;
+    --line: #E1E5F2;
+    --line-soft: #EEF1F9;
+    --teal: #0EA19B;
+    --teal-soft: #DEF5F2;
+    --gold: #E2932A;
+    --gold-soft: #FCEFD8;
+    --rust: #EB5B4C;
+    --rust-soft: #FCE3E0;
+    --accent-grad: linear-gradient(90deg, #0EA19B, #E2932A 50%, #EB5B4C);
+    --shadow: 0 2px 10px rgba(28,34,66,0.07);
+    --shadow-sm: 0 1px 3px rgba(28,34,66,0.05);
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Sarabun', 'Noto Sans Thai', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+  .top-accent { height: 5px; background: var(--accent-grad); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #171B2E; --paper: #1F2440; --ink: #E9EBFA; --ink-soft: #9CA3C7;
+      --line: #343A5E; --line-soft: #272C4A; --teal: #4FD4CB; --teal-soft: #1F3E3C;
+      --gold: #F2B45B; --gold-soft: #3E3221; --rust: #F08A7D; --rust-soft: #402722;
+      --shadow: 0 2px 10px rgba(0,0,0,0.35); --shadow-sm: 0 1px 3px rgba(0,0,0,0.25);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #171B2E; --paper: #1F2440; --ink: #E9EBFA; --ink-soft: #9CA3C7;
+    --line: #343A5E; --line-soft: #272C4A; --teal: #4FD4CB; --teal-soft: #1F3E3C;
+    --gold: #F2B45B; --gold-soft: #3E3221; --rust: #F08A7D; --rust-soft: #402722;
+    --shadow: 0 2px 10px rgba(0,0,0,0.35); --shadow-sm: 0 1px 3px rgba(0,0,0,0.25);
+  }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .sync-banner {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12.5px; padding: 9px 14px; margin-bottom: 20px;
+    border: 1px solid var(--line); background: var(--paper); color: var(--ink-soft);
+    border-radius: 8px; box-shadow: var(--shadow-sm);
+  }
+  .sync-banner .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-soft); flex-shrink: 0; }
+  .sync-banner.live { color: var(--teal); border-color: var(--teal-soft); background: var(--teal-soft); }
+  .sync-banner.live .dot { background: var(--teal); }
+  .sync-banner.local { color: var(--gold); border-color: var(--gold-soft); background: var(--gold-soft); }
+  .sync-banner.local .dot { background: var(--gold); }
+
+  header.top {
+    display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap;
+    gap: 20px; border-bottom: 1px solid var(--line); padding-bottom: 24px; margin-bottom: 32px;
+  }
+  header.top h1 { font-size: clamp(26px, 4vw, 36px); font-weight: 600; margin: 0 0 6px; letter-spacing: -0.01em; line-height: 1.2; }
+  header.top p { margin: 0; color: var(--ink-soft); font-size: 15px; }
+  .meta-line { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13.5px; color: var(--ink-soft); text-align: right; }
+  .meta-line div span { display: block; color: var(--ink); font-weight: 600; font-size: 15px; }
+
+  .hero { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 14px; margin-bottom: 40px; }
+  .hero .cell { background: var(--paper); padding: 22px 22px 20px; border-radius: 12px; box-shadow: var(--shadow); border-top: 3px solid var(--line); }
+  .hero .cell:nth-child(1) { border-top-color: var(--teal); }
+  .hero .cell:nth-child(2) { border-top-color: var(--teal); }
+  .hero .cell:nth-child(3) { border-top-color: var(--rust); }
+  .hero .cell:nth-child(4) { border-top-color: var(--gold); }
+  .hero .cell .label { font-size: 13px; color: var(--ink-soft); margin-bottom: 10px; }
+  .hero .cell .big { font-size: 42px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+  .hero .cell .big.teal { color: var(--teal); }
+  .hero .cell .sub { font-size: 13px; color: var(--ink-soft); margin-top: 8px; }
+
+  section { margin-bottom: 44px; }
+  h2.section-title { font-size: 19px; font-weight: 600; margin: 0 0 4px; }
+  h2.section-title::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); margin-right: 8px; }
+  p.section-sub { margin: 0 0 18px; color: var(--ink-soft); font-size: 14px; }
+
+  .dist-bar { display: flex; height: 34px; width: 100%; border: 1px solid var(--line); overflow: hidden; border-radius: 9px; box-shadow: var(--shadow-sm); }
+  .dist-bar .seg { display: flex; align-items: center; justify-content: center; font-size: 12.5px; font-weight: 600; color: var(--paper); }
+  .dist-bar .seg.excellent { background: var(--teal); }
+  .dist-bar .seg.pass { background: #8C9A6E; }
+  .dist-bar .seg.coach { background: var(--rust); }
+  .legend { display: flex; gap: 24px; margin-top: 14px; flex-wrap: wrap; font-size: 13.5px; }
+  .legend .item { display: flex; align-items: center; gap: 8px; color: var(--ink-soft); }
+  .legend .swatch { width: 10px; height: 10px; border-radius: 2px; }
+  .legend .swatch.excellent { background: var(--teal); }
+  .legend .swatch.pass { background: #8C9A6E; }
+  .legend .swatch.coach { background: var(--rust); }
+
+  .action-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .action-card { border: 1px solid var(--line); background: var(--paper); padding: 18px 20px; border-radius: 12px; box-shadow: var(--shadow-sm); }
+  .action-card .n { font-size: 30px; font-weight: 700; }
+  .action-card .t { font-size: 13.5px; color: var(--ink-soft); margin-top: 4px; }
+  .action-card.rust .n { color: var(--rust); }
+  .action-card.gold .n { color: var(--gold); }
+  .action-card.teal .n { color: var(--teal); }
+
+  .team-row { display: grid; grid-template-columns: 160px 1fr 70px 60px; align-items: center; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line-soft); font-size: 14.5px; }
+  .team-row:last-child { border-bottom: none; }
+  .team-row .name { font-weight: 600; }
+  .team-row .barwrap { background: var(--line-soft); height: 10px; position: relative; border-radius: 5px; overflow: hidden; }
+  .team-row .barfill { height: 10px; background: linear-gradient(90deg, var(--teal), #4FD4CB); border-radius: 5px; }
+  .team-row .score { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .team-row .count { text-align: right; color: var(--ink-soft); font-size: 13px; }
+  .team-head { display: grid; grid-template-columns: 160px 1fr 70px 60px; gap: 16px; font-size: 12.5px; color: var(--ink-soft); padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .team-head .score, .team-head .count { text-align: right; }
+
+  .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
+  select, input[type="search"], input[type="text"], input[type="number"], input[type="date"], textarea {
+    font-family: inherit; font-size: 14px; padding: 8px 12px; border: 1px solid var(--line); background: var(--paper); color: var(--ink);
+    border-radius: 7px;
+  }
+  textarea { width: 100%; resize: vertical; }
+  select:focus, input:focus, textarea:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-soft); }
+  input[type="search"] { min-width: 200px; flex: 1; }
+
+  table.ledger { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.ledger thead th {
+    text-align: left; font-weight: 600; font-size: 12px; color: var(--ink-soft);
+    border-bottom: 1px solid var(--line); padding: 10px 10px; white-space: nowrap; cursor: pointer; user-select: none;
+    background: var(--line-soft);
+  }
+  table.ledger thead th:hover { color: var(--ink); }
+  table.ledger thead th.num, table.ledger td.num { text-align: right; }
+  table.ledger tbody td { padding: 9px 10px; border-bottom: 1px solid var(--line-soft); white-space: nowrap; }
+  table.ledger tbody tr:hover { background: var(--line-soft); }
+  .tag { display: inline-block; padding: 3px 10px; font-size: 12px; font-weight: 600; border-radius: 20px; }
+  .tag.excellent { background: var(--teal-soft); color: var(--teal); }
+  .tag.pass { background: var(--gold-soft); color: var(--gold); }
+  .tag.coach { background: var(--rust-soft); color: var(--rust); }
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); background: var(--paper); border-radius: 12px; box-shadow: var(--shadow-sm); }
+  .table-scroll table { min-width: 1000px; }
+
+  .rowbtn { border: 1px solid var(--line); background: var(--paper); color: var(--ink-soft); font-size: 12px; padding: 4px 10px; cursor: pointer; margin-right: 4px; font-family: inherit; border-radius: 6px; }
+  .rowbtn:hover { color: var(--teal); border-color: var(--teal); }
+  .rowbtn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .rowbtn.danger:hover { color: var(--rust); border-color: var(--rust); }
+
+  .form-card { border: 1px solid var(--line); background: var(--paper); padding: 24px; border-radius: 14px; box-shadow: var(--shadow); }
+  .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px 20px; margin-bottom: 18px; }
+  .field label { display: block; font-size: 12.5px; color: var(--ink-soft); margin-bottom: 6px; }
+  .field input, .field select { width: 100%; }
+  .criteria-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 20px; }
+  .crit-field { border: 1px solid var(--line-soft); background: var(--line-soft); padding: 12px; border-radius: 10px; }
+  .crit-field .cname { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .crit-field .cweight { font-size: 11px; color: var(--ink-soft); margin-bottom: 8px; }
+  .crit-field input[type="range"] { width: 100%; accent-color: var(--teal); }
+  .crit-field .cval { text-align: center; font-weight: 700; font-size: 18px; margin-top: 4px; color: var(--teal); }
+  .form-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; border-top: 1px solid var(--line-soft); padding-top: 18px; }
+  .preview { display: flex; align-items: baseline; gap: 14px; }
+  .preview .pscore { font-size: 34px; font-weight: 700; color: var(--teal); }
+  .preview .pgrade { font-size: 13px; }
+  .form-actions { display: flex; gap: 10px; align-items: center; }
+  .btn { font-family: inherit; font-size: 14px; padding: 9px 20px; border: 1px solid var(--teal); background: var(--teal); color: #fff; cursor: pointer; border-radius: 8px; transition: opacity 0.15s; }
+  .btn:hover { opacity: 0.88; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn.secondary { background: transparent; color: var(--ink-soft); border-color: var(--line); }
+  .checkbox-line { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--ink-soft); }
+
+  .rubric-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .rubric-table th, .rubric-table td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  .rubric-table th { background: var(--line-soft); font-weight: 600; font-size: 12px; }
+  .rubric-table td.dim { font-weight: 600; white-space: nowrap; color: var(--teal); }
+  .rubric-table td.weight { text-align: center; white-space: nowrap; color: var(--ink-soft); }
+  .rubric-note { font-size: 13px; color: var(--ink-soft); margin-top: 12px; line-height: 1.6; }
+
+  .roster-card { border: 1px solid var(--line); background: var(--paper); padding: 20px; border-radius: 14px; box-shadow: var(--shadow); }
+  .roster-add { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .roster-add input { flex: 1; min-width: 160px; }
+  .roster-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .roster-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--teal-soft); color: var(--teal); border-radius: 20px;
+    padding: 5px 8px 5px 12px; font-size: 13px; font-weight: 600;
+  }
+  .roster-chip .rteam { color: var(--ink-soft); font-weight: 400; }
+  .roster-chip button {
+    border: none; background: var(--paper); color: var(--ink-soft); width: 18px; height: 18px;
+    border-radius: 50%; cursor: pointer; font-size: 12px; line-height: 1; display: flex; align-items: center; justify-content: center;
+  }
+  .roster-chip button:hover { color: var(--rust); }
+  .roster-empty { color: var(--ink-soft); font-size: 13.5px; }
+
+  .trend-card { border: 1px solid var(--line); background: var(--paper); padding: 18px 20px 8px; border-radius: 14px; box-shadow: var(--shadow); }
+  .trend-point { cursor: pointer; }
+  .trend-point:hover circle { r: 5.5; }
+  .trend-label { font-size: 10.5px; fill: var(--ink-soft); font-family: 'Sarabun', sans-serif; }
+  .trend-value { font-size: 10.5px; fill: var(--teal); font-weight: 600; font-family: 'Sarabun', sans-serif; }
+
+  footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .form-grid { grid-template-columns: 1fr 1fr; }
+    .criteria-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .hero { grid-template-columns: 1fr 1fr; }
+    .action-grid { grid-template-columns: 1fr; }
+    header.top { flex-direction: column; align-items: flex-start; }
+    .meta-line { text-align: left; }
+    .team-row, .team-head { grid-template-columns: 100px 1fr 50px 40px; gap: 8px; font-size: 13px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .criteria-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="top-accent"></div>
+<div class="wrap">
+
+  <div class="sync-banner" id="syncBanner"><span class="dot"></span><span id="syncText">กำลังเชื่อมต่อ...</span></div>
+
+  <header class="top">
+    <div>
+      <h1>สรุปผลประเมินคุณภาพการโทร</h1>
+      <p>แบบฟอร์มประเมิน CRM Agent · กรอกและแก้ไขคะแนนร่วมกันได้จากหน้านี้</p>
+    </div>
+    <div class="meta-line">
+      <div>ผู้ประเมิน<span>QA-นิว</span></div>
+      <div>จำนวนสาย<span id="metaCount">–</span></div>
+      <div>ประเภทสายล่าสุด<span id="metaLastType">Outbound</span></div>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="cell">
+      <div class="label">คะแนนเฉลี่ยรวม (เต็ม 100)</div>
+      <div class="big teal" id="heroAvg">–</div>
+      <div class="sub" id="heroAvgSub">–</div>
+    </div>
+    <div class="cell">
+      <div class="label">อัตราผ่านเกณฑ์</div>
+      <div class="big" id="heroPassRate">–</div>
+      <div class="sub">ยอดเยี่ยม + ผ่าน</div>
+    </div>
+    <div class="cell">
+      <div class="label">ต้องโค้ชด่วน</div>
+      <div class="big" id="heroCoach">–</div>
+      <div class="sub">คะแนน ≤ 80 หรือ Auto-fail</div>
+    </div>
+    <div class="cell">
+      <div class="label">Auto-fail</div>
+      <div class="big" id="heroAutofail">–</div>
+      <div class="sub" id="heroAutofailSub">สาย</div>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="section-title">เกณฑ์การให้คะแนน</h2>
+    <p class="section-sub">ให้คะแนนแต่ละมิติ 1–5 ระบบคำนวณ "คะแนนดิบ" อัตโนมัติตามน้ำหนักด้านล่าง (คำอธิบายแต่ละระดับเป็นแนวทาง ปรับถ้อยคำได้ตามมาตรฐานทีมจริง)</p>
+    <div class="table-scroll">
+      <table class="rubric-table">
+        <thead>
+          <tr><th>มิติ</th><th>น้ำหนัก</th><th>5 – ดีเยี่ยม</th><th>4 – ดี</th><th>3 – พอใช้</th><th>2 – ต้องปรับปรุง</th><th>1 – ต่ำมาก</th></tr>
+        </thead>
+        <tbody id="rubricBody"></tbody>
+      </table>
+    </div>
+    <p class="rubric-note">
+      สูตรคำนวณ: คะแนนดิบ = 100 − Σ(น้ำหนัก × (5 − คะแนนที่ให้)) &nbsp;·&nbsp;
+      เกรด: ≥95 ยอดเยี่ยม · 81–94 ผ่าน · ≤80 ต้องโค้ช &nbsp;·&nbsp;
+      ถ้าติ๊ก <strong>Auto-fail</strong> คะแนนสุดท้ายจะเป็น 0 โดยไม่สนคะแนนดิบ (ใช้เมื่อมีการทำผิดร้ายแรง เช่น ละเมิด Compliance)
+    </p>
+  </section>
+
+  <section>
+    <h2 class="section-title">รายชื่อ Agent</h2>
+    <p class="section-sub">เพิ่มชื่อ Agent ไว้ล่วงหน้าได้ที่นี่ ชื่อจะไปโผล่ในช่องเลือกตอนกรอกคะแนนด้านล่างทันที (ไม่ต้องรอให้มีการประเมินก่อน)</p>
+    <div class="roster-card">
+      <div class="roster-add">
+        <input type="text" id="rAgentName" placeholder="ชื่อ Agent เช่น hf0015_name">
+        <input type="text" id="rAgentTeam" list="teamOptions" placeholder="ทีม เช่น ทีมมะปราง">
+        <button class="btn" id="rAddBtn" type="button">+ เพิ่มรายชื่อ</button>
+      </div>
+      <div class="roster-chips" id="rosterChips"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title" id="formTitle">กรอกคะแนนการสนทนาใหม่</h2>
+    <p class="section-sub" id="formSub">เลือกระดับคะแนน 1–5 ในแต่ละมิติ ระบบคำนวณคะแนนและเกรดให้อัตโนมัติ</p>
+    <div class="form-card">
+      <div class="form-grid">
+        <div class="field"><label>ชื่อ Agent</label><input type="text" id="fAgent" list="agentOptions" placeholder="เช่น hf0015_name"><datalist id="agentOptions"></datalist></div>
+        <div class="field"><label>ทีม</label><input type="text" id="fTeam" list="teamOptions" placeholder="เช่น ทีมมะปราง"><datalist id="teamOptions"></datalist></div>
+        <div class="field"><label>ประเภทสาย</label>
+          <select id="fType"><option>Outbound</option><option>Inbound</option></select>
+        </div>
+      </div>
+      <div class="form-grid" style="grid-template-columns: 1fr 2fr; margin-bottom:18px;">
+        <div class="field"><label>วันที่ประเมิน</label><input type="date" id="fDate"></div>
+        <div class="field"></div>
+      </div>
+      <div class="criteria-grid" id="critInputs"></div>
+      <div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-bottom:12px;">
+        <div class="field"><label>ความรุนแรง (ถ้ามี)</label>
+          <select id="fSeverity"><option value="-">- ไม่มี</option><option value="เล็กน้อย">เล็กน้อย</option><option value="ปานกลาง">ปานกลาง</option></select>
+        </div>
+        <div class="field"><label>สิ่งที่ต้องทำ</label>
+          <select id="fAction"><option value="">— ไม่ต้องดำเนินการ —</option><option value="Coach ใน Team Sync">Coach ใน Team Sync</option><option value="1:1 Coaching">1:1 Coaching</option></select>
+        </div>
+      </div>
+      <div class="form-grid" style="grid-template-columns: 1fr; margin-bottom:12px;">
+        <div class="field"><label>เบอร์ลูกค้า</label><input type="text" id="fPhone" placeholder="เช่น 08X-XXX-XXXX"></div>
+      </div>
+      <div class="form-grid" style="grid-template-columns: 1fr; margin-bottom:12px;">
+        <div class="field"><label>Feedback / หมายเหตุ</label><textarea id="fFeedback" rows="3" placeholder="รายละเอียดเพิ่มเติมเกี่ยวกับสายนี้ เช่น จุดที่ควรชม หรือพฤติกรรมที่ควรปรับ"></textarea></div>
+      </div>
+      <label class="checkbox-line" style="margin-bottom:18px;"><input type="checkbox" id="fAutofail"> Auto-fail (ทำผิดร้ายแรง → คะแนนสุดท้าย 0)</label>
+
+      <div class="form-footer">
+        <div class="preview">
+          <div>
+            <div style="font-size:12px;color:var(--ink-soft);margin-bottom:2px;">คะแนนสุดท้าย</div>
+            <div class="pscore" id="previewScore">100.0</div>
+          </div>
+          <div class="pgrade"><span class="tag excellent" id="previewGrade">ยอดเยี่ยม</span></div>
+        </div>
+        <div class="form-actions">
+          <button class="btn secondary" id="cancelEditBtn" style="display:none;">ยกเลิกแก้ไข</button>
+          <button class="btn" id="saveBtn">บันทึกสาย</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">การกระจายเกรด</h2>
+    <p class="section-sub">สัดส่วนของสายทั้งหมดตามระดับผลประเมิน</p>
+    <div class="dist-bar" id="distBar"></div>
+    <div class="legend" id="distLegend"></div>
+  </section>
+
+  <section>
+    <h2 class="section-title">แนวโน้มคะแนนเฉลี่ยตามวันที่</h2>
+    <p class="section-sub">คะแนนเฉลี่ยของทุกสายที่ประเมินในแต่ละวัน</p>
+    <div class="trend-card" id="trendCard">
+      <div class="roster-empty" id="trendEmpty" style="display:none;">ยังไม่มีข้อมูลพอสำหรับทำกราฟแนวโน้ม</div>
+      <svg id="trendSvg" viewBox="0 0 800 220" preserveAspectRatio="none" style="width:100%;height:220px;display:block;"></svg>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">สิ่งที่ต้องดำเนินการ</h2>
+    <p class="section-sub">จำนวนสายแบ่งตาม action ที่ระบบแนะนำ</p>
+    <div class="action-grid" id="actionGrid"></div>
+  </section>
+
+  <section>
+    <h2 class="section-title">คะแนนเฉลี่ยรายทีม</h2>
+    <p class="section-sub">เรียงจากคะแนนเฉลี่ยสูงสุดไปต่ำสุด</p>
+    <div class="team-head"><div>ทีม</div><div></div><div class="score">เฉลี่ย</div><div class="count">สาย</div></div>
+    <div id="teamList"></div>
+  </section>
+
+  <section>
+    <h2 class="section-title">รายละเอียดทุกสาย</h2>
+    <p class="section-sub">คลิกหัวคอลัมน์เพื่อเรียงลำดับ · กรองด้วยทีมหรือเกรดด้านล่าง · แก้ไขหรือลบได้ทีละสาย</p>
+    <div class="filters">
+      <input type="search" id="searchBox" placeholder="ค้นหาชื่อ Agent...">
+      <select id="teamFilter"><option value="">ทุกทีม</option></select>
+      <select id="gradeFilter">
+        <option value="">ทุกเกรด</option>
+        <option value="ยอดเยี่ยม">ยอดเยี่ยม</option>
+        <option value="ผ่าน">ผ่าน</option>
+        <option value="ต้องโค้ช">ต้องโค้ช</option>
+      </select>
+      <button class="btn secondary" id="resetDataBtn">คืนค่าข้อมูลต้นฉบับ</button>
+    </div>
+    <div class="table-scroll">
+      <table class="ledger" id="ledgerTable">
+        <thead>
+          <tr>
+            <th data-key="no" class="num">#</th>
+            <th data-key="agent">Agent</th>
+            <th data-key="team">ทีม</th>
+            <th data-key="script" class="num">Script</th>
+            <th data-key="empathy" class="num">Empathy</th>
+            <th data-key="compliance" class="num">Compliance</th>
+            <th data-key="care" class="num">Care</th>
+            <th data-key="closing" class="num">Closing</th>
+            <th data-key="final" class="num">คะแนน</th>
+            <th data-key="grade">เกรด</th>
+            <th data-key="action">สิ่งที่ต้องทำ</th>
+            <th data-key="phone">เบอร์ลูกค้า</th>
+            <th>จัดการ</th>
+          </tr>
+        </thead>
+        <tbody id="ledgerBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    ข้อมูลตั้งต้นจากไฟล์ "แบบฟอร์มประเมิน_CRM_Agent" (ชีต "กรอกคะแนน") · <span id="footerNote">การแก้ไขในหน้านี้จะซิงก์ให้ทุกคนที่เปิดหน้านี้เห็นแบบเรียลไทม์</span>
+  </footer>
+
+</div>
+
+<script>
+const WEIGHTS = { script: 4, empathy: 4, compliance: 5, care: 3, closing: 4 };
+
+const RUBRIC = [
+  { key:'script', name:'Script', desc:'ทำตามสคริปต์ / ขั้นตอนการสนทนาที่กำหนด',
+    levels:['ทำตามสคริปต์ครบทุกขั้นตอน ลื่นไหลเป็นธรรมชาติ','ทำตามเกือบครบ ตกหล่นเล็กน้อยที่ไม่กระทบสาระ','ทำตามบางส่วน ข้ามขั้นตอนที่มีผลต่อสาระ','ข้ามขั้นตอนสำคัญหลายจุด','ไม่ทำตามสคริปต์ หลุดโครงสร้างการสนทนา'] },
+  { key:'empathy', name:'Empathy', desc:'การรับฟังและแสดงความเข้าใจลูกค้า',
+    levels:['รับฟังตั้งใจ สะท้อนความรู้สึกลูกค้าได้ตรงจุด','แสดงความเข้าใจ แต่ยังไม่ครบทุกจังหวะ','สุภาพทั่วไป ไม่ปรับตามอารมณ์ลูกค้า','ตอบตามหน้าที่ ไม่แสดงความใส่ใจ','น้ำเสียง/คำพูดขาดความเห็นใจลูกค้าชัดเจน'] },
+  { key:'compliance', name:'Compliance', desc:'ปฏิบัติตามข้อกำหนด/กฎระเบียบที่บังคับ',
+    levels:['ปฏิบัติตามข้อกำหนดครบถ้วน 100%','ปฏิบัติตามเกือบครบ พลาดจุดที่ไม่กระทบความเสี่ยง','พลาดข้อกำหนดที่มีผลปานกลาง','พลาดข้อกำหนดสำคัญ มีความเสี่ยงต่อองค์กร/ลูกค้า','ละเมิดข้อกำหนดร้ายแรง (พิจารณา Auto-fail)'] },
+  { key:'care', name:'Care', desc:'ความใส่ใจในรายละเอียด/การแก้ปัญหาให้ลูกค้า',
+    levels:['เสนอทางแก้ตรงความต้องการ ติดตามจนจบ','ให้ข้อมูล/ความช่วยเหลือครบถ้วน','ให้ความช่วยเหลือพื้นฐาน ไม่ต่อยอด','ให้ข้อมูลไม่ครบ ลูกค้าต้องถามซ้ำ','ไม่ช่วยแก้ปัญหาให้ลูกค้า'] },
+  { key:'closing', name:'Closing', desc:'การปิดการสนทนา/สรุปขั้นตอนถัดไป',
+    levels:['สรุปครบ แจ้งขั้นตอนถัดไปชัดเจน ลูกค้าไม่ต้องถามซ้ำ','สรุปได้ดี ขาดรายละเอียดเล็กน้อย','ปิดสายแบบพื้นฐาน ไม่สรุปขั้นตอนถัดไป','ปิดสายกระชั้น ข้อมูลไม่ครบ','วางสาย/จบสายไม่เหมาะสม'] }
+];
+
+const SEED = [
+["1","hf0015_tta","ทีมมะปราง",5,5,5,5,5,false,"-",""],
+["2","hf0015_pui","ทีมมะปราง",5,5,5,4,5,false,"-",""],
+["3","hf0015_pop","ทีมมะปราง",5,5,5,4,5,false,"-",""],
+["4","hf0015_phung","ทีมมะปราง",5,5,5,4,5,false,"-",""],
+["5","hf0015_ting","ทีมมะปราง",4,5,4,5,5,false,"เล็กน้อย","Coach ใน Team Sync"],
+["6","hf0015_mai","ทีมมะปราง",4,5,5,4,4,false,"เล็กน้อย","Coach ใน Team Sync"],
+["7","hf0015_ae","ทีมมะปราง",4,4,5,4,4,false,"ปานกลาง","1:1 Coaching"],
+["8","hf0015_miww","ทีมมะปราง",5,5,5,4,5,false,"เล็กน้อย","Coach ใน Team Sync"],
+["9","hf0015_meple","ทีมมะปราง",4,4,5,4,4,false,"ปานกลาง","1:1 Coaching"],
+["10","hf0016_men","ทีมมีตังค์",5,5,5,5,5,false,"-",""],
+["11","hf0015_mink","ทีมมีตังค์",5,5,5,5,5,false,"-",""],
+["12","hf0015_yui","ทีมมีตังค์",5,4,5,5,5,false,"-",""],
+["13","hf0015_kop","ทีมมีตังค์",5,4,5,5,4,false,"เล็กน้อย","Coach ใน Team Sync"],
+["14","hf0015_bank","ทีมมีตังค์",4,4,5,4,4,false,"ปานกลาง","1:1 Coaching"],
+["15","hf0015_anne","ทีมมีตังค์",5,4,5,4,4,false,"ปานกลาง","1:1 Coaching"],
+["16","hf0015_whan","ทีมมิ๊กกี้",4,5,4,5,5,false,"เล็กน้อย","Coach ใน Team Sync"],
+["17","hf0015_yamon","ทีมมิ๊กกี้",5,5,5,4,4,false,"ปานกลาง","Coach ใน Team Sync"],
+["18","hf0015_iog","ทีมมิ๊กกี้",4,4,5,4,4,false,"ปานกลาง","1:1 Coaching"],
+["19","hf0015_pleng","ทีมมิ๊กกี้",4,4,4,4,4,false,"ปานกลาง","1:1 Coaching"],
+["20","hf0015_kratai","ทีมมิ๊กกี้",4,4,5,4,4,false,"เล็กน้อย","1:1 Coaching"],
+["21","hf0015_apple","ทีมมิ๊กกี้",4,4,4,4,4,false,"เล็กน้อย","1:1 Coaching"],
+["22","hf0015_pango","ทีมเอ้",4,5,4,5,5,false,"เล็กน้อย","Coach ใน Team Sync"],
+["23","hf0015_wa","ทีมเอ้",4,5,5,4,5,false,"เล็กน้อย","Coach ใน Team Sync"],
+["24","hf0015_saii","ทีมเอ้",5,5,4,5,5,false,"-",""],
+["25","hf0015_giff","ทีมเอ้",4,4,5,4,4,false,"ปานกลาง","1:1 Coaching"],
+["26","hf0015_ampare","ทีมเอ้",4,4,4,4,4,false,"ปานกลาง","1:1 Coaching"],
+["27","hf0015_ingon","ทีมเอ้",5,5,5,4,4,false,"เล็กน้อย","Coach ใน Team Sync"],
+["28","hf0015_tuck","ทีมเอ้",4,4,4,5,5,false,"ปานกลาง","1:1 Coaching"],
+["29","hf0015_Noina","ทีมเอ้",4,4,5,4,4,false,"ปานกลาง","1:1 Coaching"],
+["30","hf0015_Luknam","ทีมเอ้",4,4,5,4,4,false,"ปานกลาง","1:1 Coaching"],
+["31","hf0015_tiww","ทีมทิว",5,5,5,5,5,false,"-",""],
+["32","hf0015_tee","ทีมทิว",4,4,4,4,4,false,"ปานกลาง",""],
+["33","hf0015_evee","ทีมออย",4,4,5,4,4,false,"ปานกลาง","1:1 Coaching"],
+["34","hf0015_kungs","ทีมออย",5,5,4,5,4,false,"-","Coach ใน Team Sync"],
+["35","hf0015_pap","ทีมออย",5,4,4,4,5,false,"ปานกลาง","1:1 Coaching"],
+["36","hf0015_puy","ทีมแอพเปิ้ล",4,5,4,5,4,false,"ปานกลาง","1:1 Coaching"],
+["37","hf0015_fon","ทีมแอพเปิ้ล",4,4,5,4,4,false,"ปานกลาง","1:1 Coaching"],
+["38","hf0015_oils","ทีมแอพเปิ้ล",4,5,4,5,4,false,"ปานกลาง","1:1 Coaching"]
+].map((r,i) => ({
+  id: 'seed-' + i, no:r[0], agent:r[1], team:r[2], type:'Outbound',
+  script:r[3], empathy:r[4], compliance:r[5], care:r[6], closing:r[7],
+  autofail:r[8], severity:r[9], action:r[10], phone:''
+}));
+
+const ROSTER_SEED = (() => {
+  const seen = new Set();
+  const out = [];
+  SEED.forEach(r => {
+    const key = r.agent + '|' + r.team;
+    if (seen.has(key)) return;
+    seen.add(key);
+    out.push({ id: 'ragent-' + out.length, name: r.agent, team: r.team });
+  });
+  return out;
+})();
+
+const LOCAL_KEY = 'qa-dashboard-records-v1';
+const LOCAL_ROSTER_KEY = 'qa-dashboard-roster-v1';
+const SESSION_ID = 'sess-' + Math.random().toString(36).slice(2) + Date.now();
+
+let DATA = [];
+let ROSTER = [];
+let editingId = null;
+let db = null;
+let usingDb = false;
+let unsubCalls = null;
+let unsubAgents = null;
+
+// ---------- storage layer ----------
+
+function setBanner(mode) {
+  const el = document.getElementById('syncBanner');
+  const txt = document.getElementById('syncText');
+  const footerNote = document.getElementById('footerNote');
+  el.className = 'sync-banner ' + mode;
+  if (mode === 'live') {
+    txt.textContent = 'เชื่อมต่อแล้ว — ทุกคนในองค์กรที่เปิดหน้านี้แก้ไขและเห็นข้อมูลเดียวกันแบบเรียลไทม์';
+    footerNote.textContent = 'การแก้ไขในหน้านี้จะซิงก์ให้ทุกคนที่เปิดหน้านี้เห็นแบบเรียลไทม์';
+  } else if (mode === 'connecting') {
+    txt.textContent = 'กำลังเชื่อมต่อพื้นที่ข้อมูลร่วม...';
+  } else {
+    txt.textContent = 'โหมดออฟไลน์ — บันทึกเฉพาะเบราว์เซอร์นี้เท่านั้น (เปิดผ่าน claude.ai เพื่อแก้ไขร่วมกับคนอื่น)';
+    footerNote.textContent = 'ข้อมูลที่แก้ไขจะถูกเก็บไว้ในเบราว์เซอร์นี้เท่านั้น ไม่ซิงก์กับคนอื่น';
+  }
+}
+
+function loadLocal() {
+  try {
+    const raw = localStorage.getItem(LOCAL_KEY);
+    if (raw) { DATA = JSON.parse(raw); return; }
+  } catch (e) { /* ignore */ }
+  DATA = SEED.map(r => ({...r}));
+  saveLocal();
+}
+function saveLocal() {
+  try { localStorage.setItem(LOCAL_KEY, JSON.stringify(DATA)); } catch (e) { /* unavailable */ }
+}
+
+function loadLocalRoster() {
+  try {
+    const raw = localStorage.getItem(LOCAL_ROSTER_KEY);
+    if (raw) { ROSTER = JSON.parse(raw); return; }
+  } catch (e) { /* ignore */ }
+  ROSTER = ROSTER_SEED.map(r => ({...r}));
+  saveLocalRoster();
+}
+function saveLocalRoster() {
+  try { localStorage.setItem(LOCAL_ROSTER_KEY, JSON.stringify(ROSTER)); } catch (e) { /* unavailable */ }
+}
+
+async function ensureSeeded() {
+  try {
+    const seedDoc = db.doc('meta/seed');
+    const acquireResult = await seedDoc.acquire({ holder: SESSION_ID, ttlMs: 20000 });
+    if (!acquireResult.acquired) return;
+    const snap = await seedDoc.get();
+    const already = snap.exists && snap.data() && snap.data().seeded;
+    if (already) return;
+    for (const rec of SEED) {
+      const { id, ...rest } = rec;
+      await db.collection('calls').doc(id).set(rest);
+    }
+    await seedDoc.set({ seeded: true });
+  } catch (e) { /* another viewer may already be seeding; safe to ignore */ }
+}
+
+async function ensureAgentsSeeded() {
+  try {
+    const seedDoc = db.doc('meta/seedAgents');
+    const acquireResult = await seedDoc.acquire({ holder: SESSION_ID, ttlMs: 20000 });
+    if (!acquireResult.acquired) return;
+    const snap = await seedDoc.get();
+    const already = snap.exists && snap.data() && snap.data().seeded;
+    if (already) return;
+    for (const rec of ROSTER_SEED) {
+      const { id, ...rest } = rec;
+      await db.collection('agents').doc(id).set(rest);
+    }
+    await seedDoc.set({ seeded: true });
+  } catch (e) { /* another viewer may already be seeding; safe to ignore */ }
+}
+
+function subscribeCalls() {
+  unsubCalls = db.collection('calls').onSnapshot(
+    (snap) => {
+      DATA = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      setBanner('live');
+      renderAll();
+    },
+    (err) => {
+      console.error('db onSnapshot error', err);
+      switchToLocalFallback();
+    }
+  );
+}
+
+function subscribeAgents() {
+  unsubAgents = db.collection('agents').onSnapshot(
+    (snap) => {
+      ROSTER = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderRoster();
+      renderAll();
+    },
+    (err) => { console.error('agents onSnapshot error', err); }
+  );
+}
+
+function switchToLocalFallback() {
+  usingDb = false;
+  if (unsubCalls) { try { unsubCalls(); } catch(e){} unsubCalls = null; }
+  if (unsubAgents) { try { unsubAgents(); } catch(e){} unsubAgents = null; }
+  loadLocal();
+  loadLocalRoster();
+  setBanner('local');
+  renderRoster();
+  renderAll();
+}
+
+async function initStorage() {
+  setBanner('connecting');
+  try {
+    db = await claude.use('db');
+  } catch (e) { db = null; }
+  if (db) {
+    usingDb = true;
+    subscribeCalls();
+    subscribeAgents();
+    ensureSeeded();
+    ensureAgentsSeeded();
+  } else {
+    switchToLocalFallback();
+  }
+}
+
+async function persistAgentAdd(name, team) {
+  if (usingDb && db) {
+    try { await db.collection('agents').add({ name, team }); return; }
+    catch (e) { console.error('add agent failed', e); alert('เพิ่มรายชื่อไม่สำเร็จ ลองอีกครั้ง'); return; }
+  }
+  ROSTER.push({ id: 'ragent-' + Date.now(), name, team });
+  saveLocalRoster();
+  renderRoster();
+  renderAll();
+}
+async function persistAgentDelete(id) {
+  if (usingDb && db) {
+    try { await db.collection('agents').doc(id).delete(); return; }
+    catch (e) { console.error('delete agent failed', e); alert('ลบไม่สำเร็จ ลองอีกครั้ง'); return; }
+  }
+  ROSTER = ROSTER.filter(r => r.id !== id);
+  saveLocalRoster();
+  renderRoster();
+  renderAll();
+}
+
+async function persistNew(row) {
+  const { id, ...rest } = row;
+  if (usingDb && db) {
+    try { await db.collection('calls').add(rest); return; }
+    catch (e) { console.error('add failed', e); alert('บันทึกไม่สำเร็จ ลองอีกครั้ง'); return; }
+  }
+  DATA.push({ id: 'rec-' + Date.now(), ...rest });
+  saveLocal();
+  renderAll();
+}
+async function persistUpdate(id, row) {
+  const { id: _drop, ...rest } = row;
+  if (usingDb && db) {
+    try { await db.collection('calls').doc(id).set(rest); return; }
+    catch (e) { console.error('update failed', e); alert('บันทึกไม่สำเร็จ ลองอีกครั้ง'); return; }
+  }
+  const idx = DATA.findIndex(r => r.id === id);
+  if (idx >= 0) DATA[idx] = { id, ...rest };
+  saveLocal();
+  renderAll();
+}
+async function persistDelete(id) {
+  if (usingDb && db) {
+    try { await db.collection('calls').doc(id).delete(); return; }
+    catch (e) { console.error('delete failed', e); alert('ลบไม่สำเร็จ ลองอีกครั้ง'); return; }
+  }
+  DATA = DATA.filter(r => r.id !== id);
+  saveLocal();
+  renderAll();
+}
+async function persistResetAll() {
+  if (usingDb && db) {
+    try {
+      const snap = await db.collection('calls').get();
+      for (const d of snap.docs) { await d.ref ? null : null; }
+      for (const d of snap.docs) { await db.collection('calls').doc(d.id).delete(); }
+      for (const rec of SEED) {
+        const { id, ...rest } = rec;
+        await db.collection('calls').doc(id).set(rest);
+      }
+    } catch (e) { console.error('reset failed', e); alert('คืนค่าไม่สำเร็จ ลองอีกครั้ง'); }
+    return;
+  }
+  DATA = SEED.map(r => ({...r}));
+  saveLocal();
+  renderAll();
+}
+
+// ---------- scoring ----------
+
+function computeRaw(c) {
+  return 100 - (WEIGHTS.script*(5-c.script) + WEIGHTS.empathy*(5-c.empathy) + WEIGHTS.compliance*(5-c.compliance) + WEIGHTS.care*(5-c.care) + WEIGHTS.closing*(5-c.closing));
+}
+function computeFinal(c) { return c.autofail ? 0 : computeRaw(c); }
+function computeGrade(final, autofail) {
+  if (autofail) return 'ต้องโค้ช';
+  if (final >= 95) return 'ยอดเยี่ยม';
+  if (final >= 81) return 'ผ่าน';
+  return 'ต้องโค้ช';
+}
+function gradeClass(g) { if (g === 'ยอดเยี่ยม') return 'excellent'; if (g === 'ต้องโค้ช') return 'coach'; return 'pass'; }
+
+// ---------- agent roster ----------
+function renderRoster() {
+  const wrap = document.getElementById('rosterChips');
+  if (!ROSTER.length) {
+    wrap.innerHTML = '<span class="roster-empty">ยังไม่มีรายชื่อ — เพิ่มชื่อ Agent ด้านบนได้เลย</span>';
+    return;
+  }
+  const sorted = ROSTER.slice().sort((a,b) => a.name.localeCompare(b.name));
+  wrap.innerHTML = sorted.map(r => `
+    <span class="roster-chip">${r.name}${r.team ? ` <span class="rteam">· ${r.team}</span>` : ''}
+      <button type="button" data-rm="${r.id}" title="ลบชื่อนี้">×</button>
+    </span>
+  `).join('');
+  wrap.querySelectorAll('[data-rm]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('ลบชื่อนี้ออกจากรายชื่อ Agent?')) return;
+      await persistAgentDelete(btn.dataset.rm);
+    });
+  });
+}
+
+document.getElementById('rAddBtn').addEventListener('click', async () => {
+  const nameInput = document.getElementById('rAgentName');
+  const teamInput = document.getElementById('rAgentTeam');
+  const name = nameInput.value.trim();
+  const team = teamInput.value.trim();
+  if (!name) { alert('กรุณากรอกชื่อ Agent'); return; }
+  const dup = ROSTER.some(r => r.name.toLowerCase() === name.toLowerCase());
+  if (dup) { alert('มีชื่อนี้ในรายชื่ออยู่แล้ว'); return; }
+  await persistAgentAdd(name, team);
+  nameInput.value = '';
+  teamInput.value = '';
+  nameInput.focus();
+});
+
+// ---------- rubric table ----------
+const rubricBody = document.getElementById('rubricBody');
+RUBRIC.forEach(r => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td class="dim">${r.name}<br><span style="font-weight:400;color:var(--ink-soft);font-size:11.5px;">${r.desc}</span></td>
+    <td class="weight">${WEIGHTS[r.key]}</td>
+    ${r.levels.map(l => `<td>${l}</td>`).join('')}`;
+  rubricBody.appendChild(tr);
+});
+
+// ---------- entry form ----------
+const critInputs = document.getElementById('critInputs');
+RUBRIC.forEach(r => {
+  const div = document.createElement('div');
+  div.className = 'crit-field';
+  div.innerHTML = `
+    <div class="cname">${r.name}</div>
+    <div class="cweight">น้ำหนัก ${WEIGHTS[r.key]}</div>
+    <input type="range" min="1" max="5" step="1" value="5" id="crit_${r.key}">
+    <div class="cval" id="critval_${r.key}">5</div>
+  `;
+  critInputs.appendChild(div);
+});
+RUBRIC.forEach(r => { document.getElementById('crit_' + r.key).addEventListener('input', updatePreview); });
+document.getElementById('fAutofail').addEventListener('change', updatePreview);
+
+function getFormCriteria() {
+  const c = {};
+  RUBRIC.forEach(r => { c[r.key] = parseInt(document.getElementById('crit_' + r.key).value, 10); });
+  c.autofail = document.getElementById('fAutofail').checked;
+  return c;
+}
+function updatePreview() {
+  RUBRIC.forEach(r => { document.getElementById('critval_' + r.key).textContent = document.getElementById('crit_' + r.key).value; });
+  const c = getFormCriteria();
+  const final = computeFinal(c);
+  const grade = computeGrade(final, c.autofail);
+  document.getElementById('previewScore').textContent = final.toFixed(1);
+  const badge = document.getElementById('previewGrade');
+  badge.textContent = grade;
+  badge.className = 'tag ' + gradeClass(grade);
+}
+
+function resetForm() {
+  RUBRIC.forEach(r => { document.getElementById('crit_' + r.key).value = 5; });
+  document.getElementById('fAgent').value = '';
+  document.getElementById('fTeam').value = '';
+  document.getElementById('fType').value = 'Outbound';
+  document.getElementById('fSeverity').value = '-';
+  document.getElementById('fAction').value = '';
+  document.getElementById('fPhone').value = '';
+  document.getElementById('fAutofail').checked = false;
+  editingId = null;
+  document.getElementById('formTitle').textContent = 'กรอกคะแนนการสนทนาใหม่';
+  document.getElementById('formSub').textContent = 'เลือกระดับคะแนน 1–5 ในแต่ละมิติ ระบบคำนวณคะแนนและเกรดให้อัตโนมัติ';
+  document.getElementById('saveBtn').textContent = 'บันทึกสาย';
+  document.getElementById('cancelEditBtn').style.display = 'none';
+  updatePreview();
+}
+
+function loadRowIntoForm(row) {
+  RUBRIC.forEach(r => { document.getElementById('crit_' + r.key).value = row[r.key]; });
+  document.getElementById('fAgent').value = row.agent;
+  document.getElementById('fTeam').value = row.team;
+  document.getElementById('fType').value = row.type || 'Outbound';
+  document.getElementById('fSeverity').value = row.severity || '-';
+  document.getElementById('fAction').value = row.action || '';
+  document.getElementById('fPhone').value = row.phone || '';
+  document.getElementById('fAutofail').checked = !!row.autofail;
+  editingId = row.id;
+  document.getElementById('formTitle').textContent = 'แก้ไขคะแนน: ' + row.agent;
+  document.getElementById('formSub').textContent = 'แก้ไขค่าแล้วกดบันทึกเพื่ออัปเดตสายนี้ (ทุกคนที่เปิดหน้านี้จะเห็นการเปลี่ยนแปลงทันที)';
+  document.getElementById('saveBtn').textContent = 'บันทึกการแก้ไข';
+  document.getElementById('cancelEditBtn').style.display = 'inline-block';
+  updatePreview();
+  window.scrollTo({ top: document.getElementById('formTitle').offsetTop - 20, behavior: 'smooth' });
+}
+
+document.getElementById('saveBtn').addEventListener('click', async () => {
+  const agent = document.getElementById('fAgent').value.trim();
+  const team = document.getElementById('fTeam').value.trim();
+  if (!agent || !team) { alert('กรุณากรอกชื่อ Agent และทีม'); return; }
+  const c = getFormCriteria();
+  const saveBtn = document.getElementById('saveBtn');
+  saveBtn.disabled = true;
+  const row = {
+    no: editingId ? (DATA.find(r => r.id === editingId) || {}).no || '' : String(DATA.length + 1),
+    agent, team, type: document.getElementById('fType').value,
+    script: c.script, empathy: c.empathy, compliance: c.compliance, care: c.care, closing: c.closing,
+    autofail: c.autofail,
+    severity: document.getElementById('fSeverity').value,
+    action: document.getElementById('fAction').value,
+    phone: document.getElementById('fPhone').value.trim()
+  };
+  if (editingId) {
+    await persistUpdate(editingId, row);
+  } else {
+    await persistNew(row);
+  }
+  saveBtn.disabled = false;
+  resetForm();
+});
+document.getElementById('cancelEditBtn').addEventListener('click', resetForm);
+
+document.getElementById('resetDataBtn').addEventListener('click', async () => {
+  const msg = usingDb
+    ? 'คืนค่าข้อมูลกลับเป็น 38 สายต้นฉบับ? การแก้ไข/เพิ่มทั้งหมดจะหายไปสำหรับทุกคน'
+    : 'คืนค่าข้อมูลกลับเป็น 38 สายต้นฉบับ? การแก้ไข/เพิ่มทั้งหมดในเบราว์เซอร์นี้จะหายไป';
+  if (!confirm(msg)) return;
+  await persistResetAll();
+  resetForm();
+});
+
+// ---------- rendering ----------
+function renderAll() {
+  const total = DATA.length;
+  const withFinal = DATA.map(r => ({ ...r, final: computeFinal(r), grade: computeGrade(computeFinal(r), r.autofail) }));
+  const avg = total ? withFinal.reduce((s,r)=>s+r.final,0) / total : 0;
+  const passCount = withFinal.filter(r=>r.grade !== 'ต้องโค้ช').length;
+  const coachCount = withFinal.filter(r=>r.grade === 'ต้องโค้ช').length;
+  const autofailCount = withFinal.filter(r=>r.autofail).length;
+
+  document.getElementById('metaCount').textContent = total + ' สาย';
+  const lastType = total ? DATA[DATA.length-1].type : 'Outbound';
+  document.getElementById('metaLastType').textContent = lastType || 'Outbound';
+  document.getElementById('heroAvg').textContent = total ? avg.toFixed(1) : '–';
+  document.getElementById('heroAvgSub').textContent = 'จาก ' + total + ' สายที่ประเมิน';
+  document.getElementById('heroPassRate').textContent = total ? Math.round(passCount/total*100) + '%' : '–';
+  document.getElementById('heroCoach').textContent = coachCount + ' สาย';
+  document.getElementById('heroAutofail').textContent = autofailCount;
+  document.getElementById('heroAutofailSub').textContent = autofailCount === 0 ? 'ไม่มีสายเข้าเกณฑ์ Auto-fail' : 'สายที่ถูกตัดสิน Auto-fail';
+
+  const grades = ['ยอดเยี่ยม','ผ่าน','ต้องโค้ช'];
+  const distBar = document.getElementById('distBar');
+  const distLegend = document.getElementById('distLegend');
+  distBar.innerHTML = ''; distLegend.innerHTML = '';
+  grades.forEach(g => {
+    const n = withFinal.filter(r=>r.grade===g).length;
+    const pct = total ? n/total*100 : 0;
+    const seg = document.createElement('div');
+    seg.className = 'seg ' + gradeClass(g);
+    seg.style.width = pct + '%';
+    seg.textContent = pct >= 8 ? n : '';
+    distBar.appendChild(seg);
+    const item = document.createElement('div');
+    item.className = 'item';
+    item.innerHTML = `<span class="swatch ${gradeClass(g)}"></span>${g} — ${n} สาย (${Math.round(pct)}%)`;
+    distLegend.appendChild(item);
+  });
+
+  const actions = [
+    {label:'Coach ใน Team Sync', match: a => a === 'Coach ใน Team Sync', cls:'gold'},
+    {label:'1:1 Coaching', match: a => a === '1:1 Coaching', cls:'rust'},
+    {label:'ไม่ต้องดำเนินการ', match: a => !a, cls:'teal'}
+  ];
+  const actionGrid = document.getElementById('actionGrid');
+  actionGrid.innerHTML = '';
+  actions.forEach(a => {
+    const n = DATA.filter(r => a.match(r.action)).length;
+    const card = document.createElement('div');
+    card.className = 'action-card ' + a.cls;
+    card.innerHTML = `<div class="n">${n}</div><div class="t">${a.label}</div>`;
+    actionGrid.appendChild(card);
+  });
+
+  const teamMap = {};
+  withFinal.forEach(r => { (teamMap[r.team] = teamMap[r.team] || []).push(r.final); });
+  const teamStats = Object.keys(teamMap).map(t => {
+    const scores = teamMap[t];
+    return { team:t, avg: scores.reduce((s,v)=>s+v,0)/scores.length, count: scores.length };
+  }).sort((a,b) => b.avg - a.avg);
+  const teamList = document.getElementById('teamList');
+  teamList.innerHTML = '';
+  teamStats.forEach(t => {
+    const row = document.createElement('div');
+    row.className = 'team-row';
+    row.innerHTML = `<div class="name">${t.team}</div>
+      <div class="barwrap"><div class="barfill" style="width:${Math.max(t.avg,0)}%"></div></div>
+      <div class="score">${t.avg.toFixed(1)}</div>
+      <div class="count">${t.count} สาย</div>`;
+    teamList.appendChild(row);
+  });
+
+  const teamFilter = document.getElementById('teamFilter');
+  const curFilter = teamFilter.value;
+  teamFilter.innerHTML = '<option value="">ทุกทีม</option>';
+  Object.keys(teamMap).sort().forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t; opt.textContent = t;
+    teamFilter.appendChild(opt);
+  });
+  teamFilter.value = curFilter;
+
+  const teamOptions = document.getElementById('teamOptions');
+  teamOptions.innerHTML = '';
+  Object.keys(teamMap).sort().forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t;
+    teamOptions.appendChild(opt);
+  });
+
+  const agentOptions = document.getElementById('agentOptions');
+  agentOptions.innerHTML = '';
+  const allAgentNames = new Set([...ROSTER.map(r => r.name), ...DATA.map(r => r.agent)]);
+  [...allAgentNames].sort().forEach(a => {
+    const opt = document.createElement('option');
+    opt.value = a;
+    agentOptions.appendChild(opt);
+  });
+
+  renderTable(withFinal);
+}
+
+let sortKey = 'no';
+let sortDir = 1;
+
+function renderTable(withFinal) {
+  const q = document.getElementById('searchBox').value.trim().toLowerCase();
+  const teamF = document.getElementById('teamFilter').value;
+  const gradeF = document.getElementById('gradeFilter').value;
+
+  let rows = withFinal.filter(r => {
+    if (q && !r.agent.toLowerCase().includes(q)) return false;
+    if (teamF && r.team !== teamF) return false;
+    if (gradeF && r.grade !== gradeF) return false;
+    return true;
+  });
+
+  rows = rows.slice().sort((a,b) => {
+    let va = a[sortKey], vb = b[sortKey];
+    if (typeof va === 'string') { return va.localeCompare(vb) * sortDir; }
+    return ((va||0) - (vb||0)) * sortDir;
+  });
+
+  const ledgerBody = document.getElementById('ledgerBody');
+  ledgerBody.innerHTML = rows.map(r => `
+    <tr>
+      <td class="num">${r.no}</td>
+      <td>${r.agent}</td>
+      <td>${r.team}</td>
+      <td class="num">${r.script}</td>
+      <td class="num">${r.empathy}</td>
+      <td class="num">${r.compliance}</td>
+      <td class="num">${r.care}</td>
+      <td class="num">${r.closing}</td>
+      <td class="num">${r.final.toFixed(1)}${r.autofail ? ' ⚑' : ''}</td>
+      <td><span class="tag ${gradeClass(r.grade)}">${r.grade}</span></td>
+      <td>${r.action || '—'}</td>
+      <td>${r.phone || '—'}</td>
+      <td><button class="rowbtn" data-edit="${r.id}">แก้ไข</button><button class="rowbtn danger" data-del="${r.id}">ลบ</button></td>
+    </tr>
+  `).join('');
+
+  ledgerBody.querySelectorAll('[data-edit]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const row = DATA.find(r => r.id === btn.dataset.edit);
+      if (row) loadRowIntoForm(row);
+    });
+  });
+  ledgerBody.querySelectorAll('[data-del]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('ลบสายนี้?')) return;
+      await persistDelete(btn.dataset.del);
+    });
+  });
+}
+
+document.querySelectorAll('#ledgerTable thead th[data-key]').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.key;
+    if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = 1; }
+    renderAll();
+  });
+});
+document.getElementById('searchBox').addEventListener('input', renderAll);
+document.getElementById('teamFilter').addEventListener('change', renderAll);
+document.getElementById('gradeFilter').addEventListener('change', renderAll);
+
+resetForm();
+initStorage();
+</script>
+</body>
+</html>
