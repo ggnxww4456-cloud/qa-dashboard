@@ -147,7 +147,7 @@
   .tag.pass { background: var(--gold-soft); color: var(--gold); }
   .tag.coach { background: var(--rust-soft); color: var(--rust); }
   .table-scroll { overflow-x: auto; border: 1px solid var(--line); background: var(--paper); border-radius: 12px; box-shadow: var(--shadow-sm); }
-  .table-scroll table { min-width: 1000px; }
+  .table-scroll table { min-width: 1180px; }
 
   .rowbtn { border: 1px solid var(--line); background: var(--paper); color: var(--ink-soft); font-size: 12px; padding: 4px 10px; cursor: pointer; margin-right: 4px; font-family: inherit; border-radius: 6px; }
   .rowbtn:hover { color: var(--teal); border-color: var(--teal); }
@@ -182,21 +182,6 @@
   .rubric-table td.weight { text-align: center; white-space: nowrap; color: var(--ink-soft); }
   .rubric-note { font-size: 13px; color: var(--ink-soft); margin-top: 12px; line-height: 1.6; }
 
-  .roster-card { border: 1px solid var(--line); background: var(--paper); padding: 20px; border-radius: 14px; box-shadow: var(--shadow); }
-  .roster-add { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
-  .roster-add input { flex: 1; min-width: 160px; }
-  .roster-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .roster-chip {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--teal-soft); color: var(--teal); border-radius: 20px;
-    padding: 5px 8px 5px 12px; font-size: 13px; font-weight: 600;
-  }
-  .roster-chip .rteam { color: var(--ink-soft); font-weight: 400; }
-  .roster-chip button {
-    border: none; background: var(--paper); color: var(--ink-soft); width: 18px; height: 18px;
-    border-radius: 50%; cursor: pointer; font-size: 12px; line-height: 1; display: flex; align-items: center; justify-content: center;
-  }
-  .roster-chip button:hover { color: var(--rust); }
   .roster-empty { color: var(--ink-soft); font-size: 13.5px; }
 
   .trend-card { border: 1px solid var(--line); background: var(--paper); padding: 18px 20px 8px; border-radius: 14px; box-shadow: var(--shadow); }
@@ -206,6 +191,37 @@
   .trend-value { font-size: 10.5px; fill: var(--teal); font-weight: 600; font-family: 'Sarabun', sans-serif; }
 
   footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--ink-soft); }
+
+  .team-badge { display: inline-block; padding: 3px 11px; border-radius: 14px; font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+  .team-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; vertical-align: middle; flex-shrink: 0; }
+
+  .agent-link { background: none; border: none; padding: 0; font: inherit; color: var(--teal); font-weight: 600; cursor: pointer; text-decoration: underline; text-decoration-color: var(--teal-soft); }
+  .agent-link:hover { text-decoration-color: var(--teal); }
+
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(28,34,66,0.45);
+    z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 20px; overflow-y: auto;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: var(--paper); border-radius: 16px; max-width: 760px; width: 100%;
+    padding: 28px; position: relative; box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+  }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper); color: var(--ink-soft); font-size: 18px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  .modal-close:hover { color: var(--rust); border-color: var(--rust); }
+  .profile-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; padding-right: 36px; }
+  .profile-head h3 { margin: 0; font-size: 22px; font-weight: 700; }
+  .profile-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+  .profile-stats .pcell { background: var(--line-soft); border-radius: 10px; padding: 12px 14px; }
+  .profile-stats .pcell .pn { font-size: 24px; font-weight: 700; }
+  .profile-stats .pcell .pl { font-size: 11.5px; color: var(--ink-soft); margin-top: 2px; }
+  .profile-list { border-top: 1px solid var(--line-soft); padding-top: 12px; }
+  .profile-row { display: grid; grid-template-columns: 90px 70px 1fr auto; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line-soft); font-size: 13.5px; }
+  .profile-row .pf-note { color: var(--ink-soft); font-size: 12.5px; }
 
   @media (max-width: 900px) {
     .form-grid { grid-template-columns: 1fr 1fr; }
@@ -279,19 +295,6 @@
       เกรด: ≥95 ยอดเยี่ยม · 81–94 ผ่าน · ≤80 ต้องโค้ช &nbsp;·&nbsp;
       ถ้าติ๊ก <strong>Auto-fail</strong> คะแนนสุดท้ายจะเป็น 0 โดยไม่สนคะแนนดิบ (ใช้เมื่อมีการทำผิดร้ายแรง เช่น ละเมิด Compliance)
     </p>
-  </section>
-
-  <section>
-    <h2 class="section-title">รายชื่อ Agent</h2>
-    <p class="section-sub">เพิ่มชื่อ Agent ไว้ล่วงหน้าได้ที่นี่ ชื่อจะไปโผล่ในช่องเลือกตอนกรอกคะแนนด้านล่างทันที (ไม่ต้องรอให้มีการประเมินก่อน)</p>
-    <div class="roster-card">
-      <div class="roster-add">
-        <input type="text" id="rAgentName" placeholder="ชื่อ Agent เช่น hf0015_name">
-        <input type="text" id="rAgentTeam" list="teamOptions" placeholder="ทีม เช่น ทีมมะปราง">
-        <button class="btn" id="rAddBtn" type="button">+ เพิ่มรายชื่อ</button>
-      </div>
-      <div class="roster-chips" id="rosterChips"></div>
-    </div>
   </section>
 
   <section>
@@ -390,6 +393,7 @@
         <thead>
           <tr>
             <th data-key="no" class="num">#</th>
+            <th data-key="date">วันที่</th>
             <th data-key="agent">Agent</th>
             <th data-key="team">ทีม</th>
             <th data-key="script" class="num">Script</th>
@@ -401,6 +405,7 @@
             <th data-key="grade">เกรด</th>
             <th data-key="action">สิ่งที่ต้องทำ</th>
             <th data-key="phone">เบอร์ลูกค้า</th>
+            <th>Feedback</th>
             <th>จัดการ</th>
           </tr>
         </thead>
@@ -413,6 +418,13 @@
     ข้อมูลตั้งต้นจากไฟล์ "แบบฟอร์มประเมิน_CRM_Agent" (ชีต "กรอกคะแนน") · <span id="footerNote">การแก้ไขในหน้านี้จะซิงก์ให้ทุกคนที่เปิดหน้านี้เห็นแบบเรียลไทม์</span>
   </footer>
 
+</div>
+
+<div class="modal-overlay" id="agentModalOverlay">
+  <div class="modal-box">
+    <button class="modal-close" id="agentModalClose" type="button">×</button>
+    <div id="agentModalBody"></div>
+  </div>
 </div>
 
 <script>
@@ -471,34 +483,19 @@ const SEED = [
 ["37","hf0015_fon","ทีมแอพเปิ้ล",4,4,5,4,4,false,"ปานกลาง","1:1 Coaching"],
 ["38","hf0015_oils","ทีมแอพเปิ้ล",4,5,4,5,4,false,"ปานกลาง","1:1 Coaching"]
 ].map((r,i) => ({
-  id: 'seed-' + i, no:r[0], agent:r[1], team:r[2], type:'Outbound',
+  id: 'seed-' + i, no:r[0], agent:r[1], team:r[2], type:'Outbound', date:'2026-08-28',
   script:r[3], empathy:r[4], compliance:r[5], care:r[6], closing:r[7],
-  autofail:r[8], severity:r[9], action:r[10], phone:''
+  autofail:r[8], severity:r[9], action:r[10], phone:'', feedback:''
 }));
 
-const ROSTER_SEED = (() => {
-  const seen = new Set();
-  const out = [];
-  SEED.forEach(r => {
-    const key = r.agent + '|' + r.team;
-    if (seen.has(key)) return;
-    seen.add(key);
-    out.push({ id: 'ragent-' + out.length, name: r.agent, team: r.team });
-  });
-  return out;
-})();
-
 const LOCAL_KEY = 'qa-dashboard-records-v1';
-const LOCAL_ROSTER_KEY = 'qa-dashboard-roster-v1';
 const SESSION_ID = 'sess-' + Math.random().toString(36).slice(2) + Date.now();
 
 let DATA = [];
-let ROSTER = [];
 let editingId = null;
 let db = null;
 let usingDb = false;
 let unsubCalls = null;
-let unsubAgents = null;
 
 // ---------- storage layer ----------
 
@@ -530,18 +527,6 @@ function saveLocal() {
   try { localStorage.setItem(LOCAL_KEY, JSON.stringify(DATA)); } catch (e) { /* unavailable */ }
 }
 
-function loadLocalRoster() {
-  try {
-    const raw = localStorage.getItem(LOCAL_ROSTER_KEY);
-    if (raw) { ROSTER = JSON.parse(raw); return; }
-  } catch (e) { /* ignore */ }
-  ROSTER = ROSTER_SEED.map(r => ({...r}));
-  saveLocalRoster();
-}
-function saveLocalRoster() {
-  try { localStorage.setItem(LOCAL_ROSTER_KEY, JSON.stringify(ROSTER)); } catch (e) { /* unavailable */ }
-}
-
 async function ensureSeeded() {
   try {
     const seedDoc = db.doc('meta/seed');
@@ -553,22 +538,6 @@ async function ensureSeeded() {
     for (const rec of SEED) {
       const { id, ...rest } = rec;
       await db.collection('calls').doc(id).set(rest);
-    }
-    await seedDoc.set({ seeded: true });
-  } catch (e) { /* another viewer may already be seeding; safe to ignore */ }
-}
-
-async function ensureAgentsSeeded() {
-  try {
-    const seedDoc = db.doc('meta/seedAgents');
-    const acquireResult = await seedDoc.acquire({ holder: SESSION_ID, ttlMs: 20000 });
-    if (!acquireResult.acquired) return;
-    const snap = await seedDoc.get();
-    const already = snap.exists && snap.data() && snap.data().seeded;
-    if (already) return;
-    for (const rec of ROSTER_SEED) {
-      const { id, ...rest } = rec;
-      await db.collection('agents').doc(id).set(rest);
     }
     await seedDoc.set({ seeded: true });
   } catch (e) { /* another viewer may already be seeding; safe to ignore */ }
@@ -588,25 +557,11 @@ function subscribeCalls() {
   );
 }
 
-function subscribeAgents() {
-  unsubAgents = db.collection('agents').onSnapshot(
-    (snap) => {
-      ROSTER = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      renderRoster();
-      renderAll();
-    },
-    (err) => { console.error('agents onSnapshot error', err); }
-  );
-}
-
 function switchToLocalFallback() {
   usingDb = false;
   if (unsubCalls) { try { unsubCalls(); } catch(e){} unsubCalls = null; }
-  if (unsubAgents) { try { unsubAgents(); } catch(e){} unsubAgents = null; }
   loadLocal();
-  loadLocalRoster();
   setBanner('local');
-  renderRoster();
   renderAll();
 }
 
@@ -618,33 +573,10 @@ async function initStorage() {
   if (db) {
     usingDb = true;
     subscribeCalls();
-    subscribeAgents();
     ensureSeeded();
-    ensureAgentsSeeded();
   } else {
     switchToLocalFallback();
   }
-}
-
-async function persistAgentAdd(name, team) {
-  if (usingDb && db) {
-    try { await db.collection('agents').add({ name, team }); return; }
-    catch (e) { console.error('add agent failed', e); alert('เพิ่มรายชื่อไม่สำเร็จ ลองอีกครั้ง'); return; }
-  }
-  ROSTER.push({ id: 'ragent-' + Date.now(), name, team });
-  saveLocalRoster();
-  renderRoster();
-  renderAll();
-}
-async function persistAgentDelete(id) {
-  if (usingDb && db) {
-    try { await db.collection('agents').doc(id).delete(); return; }
-    catch (e) { console.error('delete agent failed', e); alert('ลบไม่สำเร็จ ลองอีกครั้ง'); return; }
-  }
-  ROSTER = ROSTER.filter(r => r.id !== id);
-  saveLocalRoster();
-  renderRoster();
-  renderAll();
 }
 
 async function persistNew(row) {
@@ -709,40 +641,37 @@ function computeGrade(final, autofail) {
 }
 function gradeClass(g) { if (g === 'ยอดเยี่ยม') return 'excellent'; if (g === 'ต้องโค้ช') return 'coach'; return 'pass'; }
 
-// ---------- agent roster ----------
-function renderRoster() {
-  const wrap = document.getElementById('rosterChips');
-  if (!ROSTER.length) {
-    wrap.innerHTML = '<span class="roster-empty">ยังไม่มีรายชื่อ — เพิ่มชื่อ Agent ด้านบนได้เลย</span>';
-    return;
-  }
-  const sorted = ROSTER.slice().sort((a,b) => a.name.localeCompare(b.name));
-  wrap.innerHTML = sorted.map(r => `
-    <span class="roster-chip">${r.name}${r.team ? ` <span class="rteam">· ${r.team}</span>` : ''}
-      <button type="button" data-rm="${r.id}" title="ลบชื่อนี้">×</button>
-    </span>
-  `).join('');
-  wrap.querySelectorAll('[data-rm]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      if (!confirm('ลบชื่อนี้ออกจากรายชื่อ Agent?')) return;
-      await persistAgentDelete(btn.dataset.rm);
-    });
-  });
+const TEAM_PALETTE = [
+  { bg:'#FCE4E4', fg:'#C23B4B' },
+  { bg:'#FDEBD9', fg:'#C97B1E' },
+  { bg:'#FCF3C8', fg:'#A4881A' },
+  { bg:'#E1F4E3', fg:'#2E9E55' },
+  { bg:'#D9F3EF', fg:'#128C83' },
+  { bg:'#DDEAFB', fg:'#2F6FCB' },
+  { bg:'#E7E1FA', fg:'#7A4FC2' },
+  { bg:'#FBE1EF', fg:'#C23B92' },
+  { bg:'#E7EEDB', fg:'#5B7A2A' },
+  { bg:'#F4E2D2', fg:'#A8622A' }
+];
+function teamColor(team) {
+  const s = String(team || '');
+  let hash = 0;
+  for (let i = 0; i < s.length; i++) hash = (hash * 31 + s.charCodeAt(i)) >>> 0;
+  return TEAM_PALETTE[hash % TEAM_PALETTE.length];
 }
 
-document.getElementById('rAddBtn').addEventListener('click', async () => {
-  const nameInput = document.getElementById('rAgentName');
-  const teamInput = document.getElementById('rAgentTeam');
-  const name = nameInput.value.trim();
-  const team = teamInput.value.trim();
-  if (!name) { alert('กรุณากรอกชื่อ Agent'); return; }
-  const dup = ROSTER.some(r => r.name.toLowerCase() === name.toLowerCase());
-  if (dup) { alert('มีชื่อนี้ในรายชื่ออยู่แล้ว'); return; }
-  await persistAgentAdd(name, team);
-  nameInput.value = '';
-  teamInput.value = '';
-  nameInput.focus();
-});
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+const THAI_MONTHS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+function formatDateTH(iso) {
+  if (!iso) return '—';
+  const parts = iso.split('-');
+  if (parts.length !== 3) return iso;
+  const [y, m, d] = parts;
+  const buddhistYear = parseInt(y, 10) + 543;
+  return `${parseInt(d,10)} ${THAI_MONTHS[parseInt(m,10)-1] || m} ${buddhistYear}`;
+}
 
 // ---------- rubric table ----------
 const rubricBody = document.getElementById('rubricBody');
@@ -792,9 +721,11 @@ function resetForm() {
   document.getElementById('fAgent').value = '';
   document.getElementById('fTeam').value = '';
   document.getElementById('fType').value = 'Outbound';
+  document.getElementById('fDate').value = new Date().toISOString().slice(0,10);
   document.getElementById('fSeverity').value = '-';
   document.getElementById('fAction').value = '';
   document.getElementById('fPhone').value = '';
+  document.getElementById('fFeedback').value = '';
   document.getElementById('fAutofail').checked = false;
   editingId = null;
   document.getElementById('formTitle').textContent = 'กรอกคะแนนการสนทนาใหม่';
@@ -809,9 +740,11 @@ function loadRowIntoForm(row) {
   document.getElementById('fAgent').value = row.agent;
   document.getElementById('fTeam').value = row.team;
   document.getElementById('fType').value = row.type || 'Outbound';
+  document.getElementById('fDate').value = row.date || new Date().toISOString().slice(0,10);
   document.getElementById('fSeverity').value = row.severity || '-';
   document.getElementById('fAction').value = row.action || '';
   document.getElementById('fPhone').value = row.phone || '';
+  document.getElementById('fFeedback').value = row.feedback || '';
   document.getElementById('fAutofail').checked = !!row.autofail;
   editingId = row.id;
   document.getElementById('formTitle').textContent = 'แก้ไขคะแนน: ' + row.agent;
@@ -832,11 +765,13 @@ document.getElementById('saveBtn').addEventListener('click', async () => {
   const row = {
     no: editingId ? (DATA.find(r => r.id === editingId) || {}).no || '' : String(DATA.length + 1),
     agent, team, type: document.getElementById('fType').value,
+    date: document.getElementById('fDate').value || new Date().toISOString().slice(0,10),
     script: c.script, empathy: c.empathy, compliance: c.compliance, care: c.care, closing: c.closing,
     autofail: c.autofail,
     severity: document.getElementById('fSeverity').value,
     action: document.getElementById('fAction').value,
-    phone: document.getElementById('fPhone').value.trim()
+    phone: document.getElementById('fPhone').value.trim(),
+    feedback: document.getElementById('fFeedback').value.trim()
   };
   if (editingId) {
     await persistUpdate(editingId, row);
@@ -858,6 +793,120 @@ document.getElementById('resetDataBtn').addEventListener('click', async () => {
 });
 
 // ---------- rendering ----------
+function shortDateLabel(iso) {
+  if (!iso || iso === 'ไม่ระบุ') return '—';
+  const parts = iso.split('-');
+  if (parts.length !== 3) return iso;
+  return `${parseInt(parts[2],10)}/${parseInt(parts[1],10)}`;
+}
+
+function renderTrend(withFinal) {
+  const svg = document.getElementById('trendSvg');
+  const emptyMsg = document.getElementById('trendEmpty');
+  const byDate = {};
+  withFinal.forEach(r => {
+    const d = r.date || 'ไม่ระบุ';
+    (byDate[d] = byDate[d] || []).push(r.final);
+  });
+  const dates = Object.keys(byDate).sort();
+  if (dates.length < 2) {
+    svg.style.display = 'none';
+    emptyMsg.style.display = 'block';
+    emptyMsg.textContent = dates.length === 0
+      ? 'ยังไม่มีข้อมูลพอสำหรับทำกราฟแนวโน้ม'
+      : 'มีข้อมูลวันเดียว เพิ่มสายในวันอื่นเพื่อดูแนวโน้ม';
+    return;
+  }
+  svg.style.display = 'block';
+  emptyMsg.style.display = 'none';
+
+  const points = dates.map(d => ({
+    date: d,
+    avg: byDate[d].reduce((s,v)=>s+v,0) / byDate[d].length,
+    count: byDate[d].length
+  }));
+
+  const W = 800, H = 220, padL = 40, padR = 20, padT = 20, padB = 34;
+  const innerW = W - padL - padR, innerH = H - padT - padB;
+  const minY = 0, maxY = 100;
+  const x = i => padL + (points.length === 1 ? innerW/2 : (innerW * i / (points.length - 1)));
+  const y = v => padT + innerH - ((v - minY) / (maxY - minY)) * innerH;
+
+  let svgParts = [];
+  // gridlines
+  [0,25,50,75,100].forEach(g => {
+    svgParts.push(`<line x1="${padL}" y1="${y(g)}" x2="${W-padR}" y2="${y(g)}" stroke="var(--line-soft)" stroke-width="1"/>`);
+    svgParts.push(`<text x="${padL-8}" y="${y(g)+4}" text-anchor="end" class="trend-label">${g}</text>`);
+  });
+  // line
+  const path = points.map((p,i) => `${i===0?'M':'L'}${x(i).toFixed(1)},${y(p.avg).toFixed(1)}`).join(' ');
+  svgParts.push(`<path d="${path}" fill="none" stroke="var(--teal)" stroke-width="2.5"/>`);
+  // points + labels
+  points.forEach((p,i) => {
+    svgParts.push(`<g class="trend-point">
+      <circle cx="${x(i).toFixed(1)}" cy="${y(p.avg).toFixed(1)}" r="4" fill="var(--teal)"/>
+      <text x="${x(i).toFixed(1)}" y="${y(p.avg).toFixed(1)-10}" text-anchor="middle" class="trend-value">${p.avg.toFixed(1)}</text>
+      <text x="${x(i).toFixed(1)}" y="${H-10}" text-anchor="middle" class="trend-label">${shortDateLabel(p.date)}</text>
+      <title>${formatDateTH(p.date)} — เฉลี่ย ${p.avg.toFixed(1)} (${p.count} สาย)</title>
+    </g>`);
+  });
+  svg.innerHTML = svgParts.join('');
+}
+
+function openAgentProfile(agentName) {
+  const calls = DATA
+    .map(r => ({ ...r, final: computeFinal(r), grade: computeGrade(computeFinal(r), r.autofail) }))
+    .filter(r => r.agent === agentName)
+    .sort((a,b) => (a.date||'').localeCompare(b.date||''));
+  if (!calls.length) return;
+
+  const avg = calls.reduce((s,r)=>s+r.final,0) / calls.length;
+  const best = Math.max(...calls.map(r=>r.final));
+  const worst = Math.min(...calls.map(r=>r.final));
+  const team = calls[calls.length-1].team;
+
+  const rowsHtml = calls.slice().reverse().map(r => `
+    <div class="profile-row">
+      <div>${formatDateTH(r.date)}</div>
+      <div><span class="tag ${gradeClass(r.grade)}">${r.final.toFixed(1)}</span></div>
+      <div class="pf-note">${r.feedback ? escapeHtml(r.feedback) : (r.action || '—')}</div>
+      <div style="color:var(--ink-soft);font-size:12px;">${r.team}</div>
+    </div>
+  `).join('');
+
+  const body = document.getElementById('agentModalBody');
+  body.innerHTML = `
+    <div class="profile-head">
+      <h3>${escapeHtml(agentName)}</h3>
+      <span style="color:var(--ink-soft);font-size:14px;">${escapeHtml(team || '')}</span>
+    </div>
+    <div class="profile-stats">
+      <div class="pcell"><div class="pn" style="color:var(--teal);">${avg.toFixed(1)}</div><div class="pl">คะแนนเฉลี่ย</div></div>
+      <div class="pcell"><div class="pn">${calls.length}</div><div class="pl">สายที่ประเมิน</div></div>
+      <div class="pcell"><div class="pn">${best.toFixed(0)} / ${worst.toFixed(0)}</div><div class="pl">สูงสุด / ต่ำสุด</div></div>
+    </div>
+    <div class="profile-list">${rowsHtml}</div>
+    <div style="margin-top:18px; padding-top:14px; border-top:1px solid var(--line-soft); display:flex; justify-content:flex-end;">
+      <button class="rowbtn danger" id="deleteAgentBtn" type="button">ลบ Agent นี้ทั้งหมด (${calls.length} สาย)</button>
+    </div>
+  `;
+  document.getElementById('deleteAgentBtn').addEventListener('click', async function() {
+    if (!confirm(`ลบ Agent "${agentName}" พร้อมประวัติคะแนนทั้งหมด ${calls.length} สาย?\nการลบนี้ไม่สามารถกู้คืนได้ และจะลบให้ทุกคนที่เปิดหน้านี้เห็นด้วย (ถ้าเชื่อมต่อแบบเรียลไทม์อยู่)`)) return;
+    this.disabled = true;
+    this.textContent = 'กำลังลบ...';
+    for (const c of calls) { await persistDelete(c.id); }
+    closeAgentProfile();
+  });
+  document.getElementById('agentModalOverlay').classList.add('open');
+}
+function closeAgentProfile() {
+  document.getElementById('agentModalOverlay').classList.remove('open');
+}
+document.getElementById('agentModalClose').addEventListener('click', closeAgentProfile);
+document.getElementById('agentModalOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'agentModalOverlay') closeAgentProfile();
+});
+
 function renderAll() {
   const total = DATA.length;
   const withFinal = DATA.map(r => ({ ...r, final: computeFinal(r), grade: computeGrade(computeFinal(r), r.autofail) }));
@@ -899,6 +948,8 @@ function renderAll() {
     {label:'1:1 Coaching', match: a => a === '1:1 Coaching', cls:'rust'},
     {label:'ไม่ต้องดำเนินการ', match: a => !a, cls:'teal'}
   ];
+  renderTrend(withFinal);
+
   const actionGrid = document.getElementById('actionGrid');
   actionGrid.innerHTML = '';
   actions.forEach(a => {
@@ -918,10 +969,11 @@ function renderAll() {
   const teamList = document.getElementById('teamList');
   teamList.innerHTML = '';
   teamStats.forEach(t => {
+    const c = teamColor(t.team);
     const row = document.createElement('div');
     row.className = 'team-row';
-    row.innerHTML = `<div class="name">${t.team}</div>
-      <div class="barwrap"><div class="barfill" style="width:${Math.max(t.avg,0)}%"></div></div>
+    row.innerHTML = `<div class="name"><span class="team-dot" style="background:${c.fg};"></span>${escapeHtml(t.team)}</div>
+      <div class="barwrap"><div class="barfill" style="width:${Math.max(t.avg,0)}%;background:${c.fg};"></div></div>
       <div class="score">${t.avg.toFixed(1)}</div>
       <div class="count">${t.count} สาย</div>`;
     teamList.appendChild(row);
@@ -947,7 +999,7 @@ function renderAll() {
 
   const agentOptions = document.getElementById('agentOptions');
   agentOptions.innerHTML = '';
-  const allAgentNames = new Set([...ROSTER.map(r => r.name), ...DATA.map(r => r.agent)]);
+  const allAgentNames = new Set(DATA.map(r => r.agent));
   [...allAgentNames].sort().forEach(a => {
     const opt = document.createElement('option');
     opt.value = a;
@@ -979,11 +1031,15 @@ function renderTable(withFinal) {
   });
 
   const ledgerBody = document.getElementById('ledgerBody');
-  ledgerBody.innerHTML = rows.map(r => `
+  ledgerBody.innerHTML = rows.map(r => {
+    const fb = r.feedback || '';
+    const fbShort = fb.length > 24 ? fb.slice(0, 24) + '…' : fb;
+    return `
     <tr>
       <td class="num">${r.no}</td>
-      <td>${r.agent}</td>
-      <td>${r.team}</td>
+      <td>${formatDateTH(r.date)}</td>
+      <td><button type="button" class="agent-link" data-profile="${escapeHtml(r.agent)}">${escapeHtml(r.agent)}</button></td>
+      <td><span class="team-badge" style="background:${teamColor(r.team).bg};color:${teamColor(r.team).fg};">${escapeHtml(r.team)}</span></td>
       <td class="num">${r.script}</td>
       <td class="num">${r.empathy}</td>
       <td class="num">${r.compliance}</td>
@@ -993,10 +1049,15 @@ function renderTable(withFinal) {
       <td><span class="tag ${gradeClass(r.grade)}">${r.grade}</span></td>
       <td>${r.action || '—'}</td>
       <td>${r.phone || '—'}</td>
+      <td title="${escapeHtml(fb)}">${fb ? escapeHtml(fbShort) : '—'}</td>
       <td><button class="rowbtn" data-edit="${r.id}">แก้ไข</button><button class="rowbtn danger" data-del="${r.id}">ลบ</button></td>
     </tr>
-  `).join('');
+  `;
+  }).join('');
 
+  ledgerBody.querySelectorAll('[data-profile]').forEach(btn => {
+    btn.addEventListener('click', () => openAgentProfile(btn.dataset.profile));
+  });
   ledgerBody.querySelectorAll('[data-edit]').forEach(btn => {
     btn.addEventListener('click', () => {
       const row = DATA.find(r => r.id === btn.dataset.edit);
